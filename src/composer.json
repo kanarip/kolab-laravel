@@ -12,7 +12,6 @@
         "fideloper/proxy": "^4.0",
         "florianv/laravel-swap": "^2.0",
         "iatstuti/laravel-nullable-fields": "~1.0",
-        "laravel/cashier": "^10.2",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "php-http/curl-client": "^2.0",
