@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    use NullableFields;
 
     /**
      * The attributes that are mass assignable.
@@ -35,5 +37,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    /**
+        The attributes that can be null.
+     */
+    protected $nullable = [
+        'name'
     ];
 }
