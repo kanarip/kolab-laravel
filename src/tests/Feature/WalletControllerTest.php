@@ -14,7 +14,7 @@ class WalletControllerTest extends TestCase
 
         @return void
      */
-    public function testAssignWalletController()
+    public function testAddWalletController()
     {
         $userA = User::firstOrCreate(
             [
@@ -46,5 +46,45 @@ class WalletControllerTest extends TestCase
         $bAccount = $userB->accounts()->get();
 
         $this->assertTrue($bAccount[0]->uuid === $aWallet[0]->uuid);
+    }
+
+    /**
+        Verify controllers can also be removed from wallets.
+
+        @return void
+     */
+    public function testRemoveWalletController()
+    {
+        $userA = User::firstOrCreate(
+            [
+                'email' => 'WalletController2A@WalletController.com'
+            ]
+        );
+
+        $userA->wallets()->each(
+            function ($wallet) {
+                $userB = User::firstOrCreate(
+                    [
+                        'email' => 'WalletController2B@WalletController.com'
+                    ]
+                );
+
+                $wallet->addController($userB);
+            }
+        );
+
+        $userB = User::firstOrCreate(
+            [
+                'email' => 'WalletController2B@WalletController.com'
+            ]
+        );
+
+        $userB->accounts()->each(
+            function ($wallet) {
+                $wallet->removeController($userB);
+            }
+        );
+
+        $this->assertTrue($userB->accounts()->count() == 0);
     }
 }

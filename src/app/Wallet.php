@@ -47,7 +47,7 @@ class Wallet extends Model
         {@inheritDoc}
      */
     protected $attributes = [
-        'balance' => '0.00',
+        'balance' => 0.00,
         'currency' => 'CHF'
     ];
 
@@ -79,18 +79,40 @@ class Wallet extends Model
 
     /**
         Provide a custom ID (uuid) property.
+
+        @todo migrate to observers
+
+        @return void
      */
     protected static function boot()
     {
         parent::boot();
 
+        // retrieved, creating, created, updating, updated, saving, saved, deleting, deleted,
+        // restoring, restored
         static::creating(
             function ($wallet) {
                 $wallet->{$wallet->getKeyName()} = \App\Utils::uuidStr();
             }
         );
+
+        // Prevent a wallet with a positive of negative balance from being deleted.
+        static::deleting(
+            function ($wallet) {
+                if ($wallet->balance != 0.00) {
+                    return false;
+                }
+
+                if ($wallet->owner->wallets()->count() <= 1) {
+                    return false;
+                }
+            }
+        );
     }
 
+    /**
+        Add a controller to this wallet.
+     */
     public function addController($user)
     {
         if (!$this->controllers()->get()->contains($user)) {
@@ -98,6 +120,51 @@ class Wallet extends Model
         }
     }
 
+    /**
+        Remove a controller from this wallet.
+
+        @return void
+     */
+    public function removeController($user)
+    {
+        if ($this->controllers()->get()->contains($user)) {
+            return $this->controllers()->forget($user);
+        }
+    }
+
+    /**
+        Add an amount of pecunia to this wallet's balance.
+
+        @param float $amount The amount of pecunia to add.
+
+        @return Wallet
+     */
+    public function credit(float $amount)
+    {
+        $this->balance += $amount;
+
+        return $this;
+    }
+
+    /**
+        Deduct an amount of pecunia from this wallet's balance.
+
+        @param float $amount The amount of pecunia to deduct.
+
+        @return Wallet
+     */
+    public function debit(float $amount)
+    {
+        $this->balance -= $amount;
+
+        return $this;
+    }
+
+    /**
+        Controllers of this wallet.
+
+        @return User[]
+     */
     public function controllers()
     {
         return $this->belongsToMany(
@@ -108,6 +175,21 @@ class Wallet extends Model
         );
     }
 
+    /**
+        Entitlements billed to this wallet.
+
+        @return Entitlement[]
+     */
+    public function entitlements()
+    {
+        return $this->hasMany('App\Entitlement', 'wallet_uuid', 'uuid');
+    }
+
+    /**
+        The owner of the wallet -- the wallet is in his/her back pocket.
+
+        @return User
+     */
     public function owner()
     {
         return $this->belongsTo('App\User', 'user_uuid', 'uuid');

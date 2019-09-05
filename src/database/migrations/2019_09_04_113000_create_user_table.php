@@ -20,6 +20,10 @@ class CreateUserTable extends Migration
                 $table->string('name', 128)->nullable();
                 $table->string('login', 128)->nullable();
                 $table->string('email');
+                $table->string('locale', 2);
+                $table->string('country', 3);
+                $table->string('currency', 3);
+                $table->string('timezone', 64);
                 $table->string('password');
                 $table->string('remember_token')->nullable();
                 $table->datetimeTz('email_verified_at')->nullable();

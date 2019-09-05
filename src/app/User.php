@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+    The eloquent definition of an authenticatable user.
+ */
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
@@ -28,7 +31,26 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'login', 'email', 'password',
+        // A humanly legible name, almost like a display name (i.e. "John Doe")
+        'name',
+        // A login (i.e. username), because logging in with the email address advertised for
+        // external communications is just... well...
+        'login',
+        // The actual email address.
+        'email',
+        'locale',
+        'country',
+        'currency',
+        'timezone',
+        // The account password.
+        'password',
+    ];
+
+    protected $attributes = [
+        'locale' => 'en',
+        'country' => 'CH',
+        'timezone' => 'Europe/Zurich',
+        'currency' => 'CHF'
     ];
 
     /**
@@ -59,6 +81,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at'
     ];
 
+    /**
+        Provide a custom ID (integer uuid) and ensure a wallet is attached.
+
+        @return void
+     */
     protected static function boot()
     {
         parent::boot();
@@ -77,6 +104,11 @@ class User extends Authenticatable implements JWTSubject
         );
     }
 
+    /**
+        Any wallets on which this user is a controller.
+
+        @return Wallet[]
+     */
     public function accounts()
     {
         return $this->belongsToMany(
@@ -87,16 +119,43 @@ class User extends Authenticatable implements JWTSubject
         );
     }
 
+    /**
+        Entitlements for this user.
+
+        @return Entitlement[]
+     */
+    public function entitlements()
+    {
+        return $this->hasMany('App\Entitlement', 'user_uuid', 'uuid');
+    }
+
+    /**
+        Wallets this user owns.
+
+        @return Wallet[]
+     */
     public function wallets()
     {
         return $this->hasMany('App\Wallet', 'user_uuid', 'uuid');
     }
 
+    /**
+        The identifier used in JWT tokens.
+
+        @return int
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
+    /**
+        Custom claims.
+
+        @todo what is this?
+
+        @return array
+     */
     public function getJWTCustomClaims()
     {
         return [];

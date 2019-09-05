@@ -23,7 +23,11 @@ $factory->define(
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => bcrypt(Str::random(10))
+            'password' => bcrypt(Str::random(10)),
+            'locale' => $faker->languageCode,
+            'country' => $faker->countryCode,
+            'currency' => $faker->currencyCode,
+            'timezone' => $faker->timezone
         ];
     }
 );
