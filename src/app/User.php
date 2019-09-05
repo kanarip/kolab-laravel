@@ -3,9 +3,10 @@
 namespace App;
 
 use Iatstuti\Database\Support\NullableFields;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -65,6 +66,7 @@ class User extends Authenticatable implements JWTSubject
         static::creating(
             function ($user) {
                 $user->{$user->getKeyName()} = \App\Utils::uuidInt();
+                $user->password = bcrypt(Str::random(64));
             }
         );
 
@@ -72,6 +74,16 @@ class User extends Authenticatable implements JWTSubject
             function ($user) {
                 $user->wallets()->create();
             }
+        );
+    }
+
+    public function accounts()
+    {
+        return $this->belongsToMany(
+            'App\Wallet',       // The foreign object definition
+            'user_accounts',    // The table name
+            'user_uuid',      // The local foreign key
+            'wallet_uuid'         // The remote foreign key
         );
     }
 
@@ -84,7 +96,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
