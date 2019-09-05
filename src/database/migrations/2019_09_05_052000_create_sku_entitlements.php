@@ -17,6 +17,7 @@ class CreateSkuEntitlements extends Migration
             'entitlement',
             function (Blueprint $table) {
                 $table->string('uuid', 36);
+                $table->bigInteger('owner_uuid');
                 $table->bigInteger('user_uuid');
                 $table->string('wallet_uuid', 36);
                 $table->string('sku_uuid', 36);
@@ -40,6 +41,7 @@ class CreateSkuEntitlements extends Migration
             'entitlement',
             function (Blueprint $table) {
                 $table->primary('uuid');
+                $table->unique(['owner_uuid', 'user_uuid']);
             }
         );
 
@@ -55,6 +57,10 @@ class CreateSkuEntitlements extends Migration
             function (Blueprint $table) {
                 $table->foreign('sku_uuid')
                     ->references('uuid')->on('sku')
+                    ->onDelete('cascade');
+
+                $table->foreign('owner_uuid')
+                    ->references('uuid')->on('user')
                     ->onDelete('cascade');
 
                 $table->foreign('user_uuid')

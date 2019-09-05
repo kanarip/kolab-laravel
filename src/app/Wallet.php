@@ -99,11 +99,18 @@ class Wallet extends Model
         // Prevent a wallet with a positive of negative balance from being deleted.
         static::deleting(
             function ($wallet) {
+                // can't delete a wallet that has any balance on it (positive and negative).
                 if ($wallet->balance != 0.00) {
                     return false;
                 }
 
+                // can't remove the last wallet for the owner.
                 if ($wallet->owner->wallets()->count() <= 1) {
+                    return false;
+                }
+
+                // can't remove a wallet that has billable entitlements attached.
+                if ($wallet->entitlements()->count() > 0) {
                     return false;
                 }
             }
@@ -112,6 +119,10 @@ class Wallet extends Model
 
     /**
         Add a controller to this wallet.
+
+        @param User $user The user to add as a controller to this wallet.
+
+        @return void
      */
     public function addController($user)
     {
@@ -123,12 +134,14 @@ class Wallet extends Model
     /**
         Remove a controller from this wallet.
 
+        @param User $user The user to remove as a controller from this wallet.
+
         @return void
      */
     public function removeController($user)
     {
         if ($this->controllers()->get()->contains($user)) {
-            return $this->controllers()->forget($user);
+            return $this->controllers()->detach($user);
         }
     }
 
@@ -142,6 +155,8 @@ class Wallet extends Model
     public function credit(float $amount)
     {
         $this->balance += $amount;
+
+        $this->save();
 
         return $this;
     }
@@ -157,6 +172,8 @@ class Wallet extends Model
     {
         $this->balance -= $amount;
 
+        $this->save();
+
         return $this;
     }
 
@@ -170,8 +187,8 @@ class Wallet extends Model
         return $this->belongsToMany(
             'App\User',         // The foreign object definition
             'user_accounts',    // The table name
-            'wallet_uuid',        // The local foreign key
-            'user_uuid'       // The remote foreign key
+            'wallet_uuid',      // The local foreign key
+            'user_uuid'         // The remote foreign key
         );
     }
 

@@ -81,6 +81,12 @@ class WalletControllerTest extends TestCase
 
         $userB->accounts()->each(
             function ($wallet) {
+                $userB = User::firstOrCreate(
+                    [
+                        'email' => 'WalletController2B@WalletController.com'
+                    ]
+                );
+
                 $wallet->removeController($userB);
             }
         );

@@ -114,8 +114,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(
             'App\Wallet',       // The foreign object definition
             'user_accounts',    // The table name
-            'user_uuid',      // The local foreign key
-            'wallet_uuid'         // The remote foreign key
+            'user_uuid',        // The local foreign key
+            'wallet_uuid'       // The remote foreign key
         );
     }
 
@@ -126,7 +126,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement', 'user_uuid', 'uuid');
+        return $this->hasMany('App\Entitlement', 'owner_uuid', 'uuid');
     }
 
     /**
