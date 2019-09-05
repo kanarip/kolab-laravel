@@ -13,12 +13,6 @@
                     {{route.name}}
                 </router-link>
             </li>
-            <!--LOGGED ADMIN-->
-            <li v-if="$auth.check(2)" v-for="(route, key) in routes.admin" v-bind:key="route.path">
-                <router-link  :to="{ name : route.path }" :key="key">
-                    {{route.name}}
-                </router-link>
-            </li>
             <!--LOGOUT-->
             <li v-if="$auth.check()">
                 <a href="#" @click.prevent="$auth.logout()">Logout</a>
