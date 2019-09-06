@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $location = geoip($_SERVER['REMOTE_ADDR']);
+        $location = geoip()->getLocation();
 
         return view('home', ['location' => $location]);
     }

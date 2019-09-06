@@ -11,5 +11,8 @@ php artisan key:generate
 php artisan jwt:secret
 npm run dev
 
+php artisan dusk:install
+php artisan dusk:chrome-driver 74
+
 php artisan serve
 
