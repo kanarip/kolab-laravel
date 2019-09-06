@@ -40,6 +40,6 @@ class UserAccountTest extends TestCase
             ]
         );
 
-        $this->assertTrue($userB->accounts()->get()[0]->uuid === $userA->wallets()->get()[0]->uuid);
+        $this->assertTrue($userB->accounts()->get()[0]->id === $userA->wallets()->get()[0]->id);
     }
 }

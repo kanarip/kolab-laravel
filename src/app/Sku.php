@@ -11,7 +11,6 @@ class Sku extends Model
 {
     protected $table = 'sku';
 
-    protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -44,6 +43,6 @@ class Sku extends Model
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement', 'sku_uuid', 'uuid');
+        return $this->hasMany('App\Entitlement');
     }
 }

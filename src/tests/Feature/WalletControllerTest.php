@@ -45,7 +45,7 @@ class WalletControllerTest extends TestCase
         $aWallet = $userA->wallets()->get();
         $bAccount = $userB->accounts()->get();
 
-        $this->assertTrue($bAccount[0]->uuid === $aWallet[0]->uuid);
+        $this->assertTrue($bAccount[0]->id === $aWallet[0]->id);
     }
 
     /**

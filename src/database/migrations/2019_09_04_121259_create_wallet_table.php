@@ -16,21 +16,21 @@ class CreateWalletTable extends Migration
         Schema::create(
             'wallet',
             function (Blueprint $table) {
-                $table->string('uuid', 36);
+                $table->string('id', 36);
                 $table->string('description', 128)->nullable();
                 $table->string('currency', 4);
                 $table->decimal('balance', 8, 2);
-                $table->bigInteger('user_uuid');
+                $table->bigInteger('user_id');
 
-                $table->primary('uuid');
-                $table->index('user_uuid');
+                $table->primary('id');
+                $table->index('user_id');
             }
         );
 
         Schema::table(
             'wallet',
             function (Blueprint $table) {
-                $table->foreign('user_uuid')->references('uuid')->on('user');
+                $table->foreign('user_id')->references('id')->on('user');
             }
         );
     }
