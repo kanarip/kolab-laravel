@@ -20,8 +20,6 @@ class User extends Authenticatable implements JWTSubject
     // do not use the plural for table names
     protected $table = 'user';
 
-    // avoid using a column 'id' with basic auto-increment logic.
-    protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'bigint';
 
@@ -114,8 +112,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(
             'App\Wallet',       // The foreign object definition
             'user_accounts',    // The table name
-            'user_uuid',        // The local foreign key
-            'wallet_uuid'       // The remote foreign key
+            'user_id',        // The local foreign key
+            'wallet_id'       // The remote foreign key
         );
     }
 
@@ -126,7 +124,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement', 'owner_uuid', 'uuid');
+        return $this->hasMany('App\Entitlement');
     }
 
     /**
@@ -136,7 +134,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function wallets()
     {
-        return $this->hasMany('App\Wallet', 'user_uuid', 'uuid');
+        return $this->hasMany('App\Wallet');
     }
 
     /**

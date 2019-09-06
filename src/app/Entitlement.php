@@ -13,11 +13,8 @@ class Entitlement extends Model
 {
     protected $table = 'entitlement';
 
-    protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
-
-    protected $guarded = ['uuid'];
 
     protected $fillable = [
         'sku_uuid',
@@ -41,8 +38,8 @@ class Entitlement extends Model
                 $entitlement->{$entitlement->getKeyName()} = \App\Utils::uuidStr();
 
                 // Make sure the owner is at least a controller on the wallet
-                $owner = \App\User::find($entitlement->owner_uuid);
-                $wallet = \App\Wallet::find($entitlement->wallet_uuid);
+                $owner = \App\User::find($entitlement->owner_id);
+                $wallet = \App\Wallet::find($entitlement->wallet_id);
 
                 if (!$owner) {
                     return false;
@@ -58,7 +55,7 @@ class Entitlement extends Model
                     }
                 }
 
-                $sku = \App\Sku::find($entitlement->sku_uuid);
+                $sku = \App\Sku::find($entitlement->sku_id);
 
                 if (!$sku) {
                     return false;
@@ -76,7 +73,7 @@ class Entitlement extends Model
      */
     public function sku()
     {
-        return $this->belongsTo('App\Sku', 'sku_uuid', 'uuid');
+        return $this->belongsTo('App\Sku');
     }
 
     /**
@@ -86,7 +83,7 @@ class Entitlement extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('App\User', 'owner_uuid', 'uuid');
+        return $this->belongsTo('App\User');
     }
 
     /**
@@ -96,7 +93,7 @@ class Entitlement extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_uuid', 'uuid');
+        return $this->belongsTo('App\User');
     }
 
     /**
@@ -106,6 +103,6 @@ class Entitlement extends Model
      */
     public function wallet()
     {
-        return $this->belongsTo('App\Wallet', 'wallet_uuid', 'uuid');
+        return $this->belongsTo('App\Wallet');
     }
 }

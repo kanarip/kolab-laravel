@@ -22,14 +22,6 @@ class Wallet extends Model
     protected $table = 'wallet';
 
     /**
-        The primary key for a wallet is a proper string.
-
-        @see \App\Utils::uuidStr()
-
-        @var string
-     */
-    protected $primaryKey = 'uuid';
-    /**
         {@inheritDoc}
      */
     public $incrementing = false;
@@ -187,8 +179,8 @@ class Wallet extends Model
         return $this->belongsToMany(
             'App\User',         // The foreign object definition
             'user_accounts',    // The table name
-            'wallet_uuid',      // The local foreign key
-            'user_uuid'         // The remote foreign key
+            'wallet_id',      // The local foreign key
+            'user_id'         // The remote foreign key
         );
     }
 
@@ -199,7 +191,7 @@ class Wallet extends Model
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement', 'wallet_uuid', 'uuid');
+        return $this->hasMany('App\Entitlement');
     }
 
     /**
@@ -209,6 +201,6 @@ class Wallet extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('App\User', 'user_uuid', 'uuid');
+        return $this->belongsTo('App\User');
     }
 }

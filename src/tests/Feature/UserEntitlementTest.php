@@ -29,10 +29,10 @@ class UserEntitlementTest extends TestCase
 
         $entitlement = Entitlement::firstOrCreate(
             [
-                'owner_uuid' => $owner->uuid,
-                'user_uuid' => $user->uuid,
-                'wallet_uuid' => $wallets[0]->uuid,
-                'sku_uuid' => $sku->uuid,
+                'owner_id' => $owner->id,
+                'user_id' => $user->id,
+                'wallet_id' => $wallets[0]->id,
+                'sku_id' => $sku->id,
                 'description' => "User Entitlement Test"
             ]
         );

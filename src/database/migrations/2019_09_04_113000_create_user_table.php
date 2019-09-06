@@ -16,7 +16,7 @@ class CreateUserTable extends Migration
         Schema::create(
             'user',
             function (Blueprint $table) {
-                $table->bigInteger('uuid');
+                $table->bigInteger('id');
                 $table->string('name', 128)->nullable();
                 $table->string('login', 128)->nullable();
                 $table->string('email');
@@ -34,7 +34,7 @@ class CreateUserTable extends Migration
         Schema::table(
             'user',
             function (Blueprint $table) {
-                $table->primary('uuid');
+                $table->primary('id');
                 $table->unique('email');
                 $table->unique('login');
             }

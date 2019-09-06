@@ -16,9 +16,9 @@ class WalletControllers extends Migration
         Schema::create(
             'user_accounts',
             function (Blueprint $table) {
-                $table->bigIncrements('uuid');
-                $table->bigInteger('user_uuid');
-                $table->string('wallet_uuid', 36);
+                $table->bigIncrements('id');
+                $table->bigInteger('user_id');
+                $table->string('wallet_id', 36);
                 $table->timestamps();
             }
         );
@@ -26,14 +26,14 @@ class WalletControllers extends Migration
         Schema::table(
             'user_accounts',
             function (Blueprint $table) {
-                $table->unique(['user_uuid', 'wallet_uuid']);
+                $table->unique(['user_id', 'wallet_id']);
 
-                $table->foreign('user_uuid')
-                    ->references('uuid')->on('user')
+                $table->foreign('user_id')
+                    ->references('id')->on('user')
                     ->onDelete('cascade');
 
-                $table->foreign('wallet_uuid')
-                    ->references('uuid')->on('wallet')
+                $table->foreign('wallet_id')
+                    ->references('id')->on('wallet')
                     ->onDelete('cascade');
             }
         );
