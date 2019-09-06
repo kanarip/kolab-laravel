@@ -1,26 +1,24 @@
 <?php
 
-namespace App;
+namespace Kolab;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
     The eloquent definition of an entitlement.
 
-    Owned by a {@link \App\User}, billed to a {@link \App\Wallet}.
+    Owned by a {@link \Kolab\User}, billed to a {@link \Kolab\Wallet}.
  */
 class Entitlement extends Model
 {
-    protected $table = 'entitlement';
-
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'sku_uuid',
-        'owner_uuid',
-        'user_uuid',
-        'wallet_uuid',
+        'sku_id',
+        'owner_id',
+        'user_id',
+        'wallet_id',
         'description'
     ];
 
@@ -35,11 +33,11 @@ class Entitlement extends Model
 
         static::creating(
             function ($entitlement) {
-                $entitlement->{$entitlement->getKeyName()} = \App\Utils::uuidStr();
+                $entitlement->{$entitlement->getKeyName()} = \Kolab\Utils::uuidStr();
 
                 // Make sure the owner is at least a controller on the wallet
-                $owner = \App\User::find($entitlement->owner_id);
-                $wallet = \App\Wallet::find($entitlement->wallet_id);
+                $owner = \Kolab\User::find($entitlement->owner_id);
+                $wallet = \Kolab\Wallet::find($entitlement->wallet_id);
 
                 if (!$owner) {
                     return false;
@@ -55,7 +53,7 @@ class Entitlement extends Model
                     }
                 }
 
-                $sku = \App\Sku::find($entitlement->sku_id);
+                $sku = \Kolab\Sku::find($entitlement->sku_id);
 
                 if (!$sku) {
                     return false;
@@ -73,7 +71,7 @@ class Entitlement extends Model
      */
     public function sku()
     {
-        return $this->belongsTo('App\Sku');
+        return $this->belongsTo('Kolab\Sku');
     }
 
     /**
@@ -83,7 +81,7 @@ class Entitlement extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Kolab\User', 'owner_id');
     }
 
     /**
@@ -93,7 +91,7 @@ class Entitlement extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Kolab\User');
     }
 
     /**
@@ -103,6 +101,6 @@ class Entitlement extends Model
      */
     public function wallet()
     {
-        return $this->belongsTo('App\Wallet');
+        return $this->belongsTo('Kolab\Wallet');
     }
 }

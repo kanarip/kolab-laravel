@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Kolab;
 
 use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
     The eloquent definition of a wallet -- a container with a chunk of change.
 
-    A wallet is owned by an {@link \App\User}.
+    A wallet is owned by an {@link \Kolab\User}.
  */
 class Wallet extends Model
 {
@@ -19,8 +19,6 @@ class Wallet extends Model
 
         @var string
      */
-    protected $table = 'wallet';
-
     /**
         {@inheritDoc}
      */
@@ -84,7 +82,7 @@ class Wallet extends Model
         // restoring, restored
         static::creating(
             function ($wallet) {
-                $wallet->{$wallet->getKeyName()} = \App\Utils::uuidStr();
+                $wallet->{$wallet->getKeyName()} = \Kolab\Utils::uuidStr();
             }
         );
 
@@ -94,6 +92,10 @@ class Wallet extends Model
                 // can't delete a wallet that has any balance on it (positive and negative).
                 if ($wallet->balance != 0.00) {
                     return false;
+                }
+
+                if (!$wallet->owner) {
+                    throw new \Exception("Wallet: " . var_export($wallet, true));
                 }
 
                 // can't remove the last wallet for the owner.
@@ -177,7 +179,7 @@ class Wallet extends Model
     public function controllers()
     {
         return $this->belongsToMany(
-            'App\User',         // The foreign object definition
+            'Kolab\User',         // The foreign object definition
             'user_accounts',    // The table name
             'wallet_id',      // The local foreign key
             'user_id'         // The remote foreign key
@@ -191,7 +193,7 @@ class Wallet extends Model
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement');
+        return $this->hasMany('Kolab\Entitlement');
     }
 
     /**
@@ -201,6 +203,6 @@ class Wallet extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Kolab\User', 'user_id', 'id');
     }
 }

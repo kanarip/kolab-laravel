@@ -29,11 +29,11 @@ class WalletControllers extends Migration
                 $table->unique(['user_id', 'wallet_id']);
 
                 $table->foreign('user_id')
-                    ->references('id')->on('user')
+                    ->references('id')->on('users')
                     ->onDelete('cascade');
 
                 $table->foreign('wallet_id')
-                    ->references('id')->on('wallet')
+                    ->references('id')->on('wallets')
                     ->onDelete('cascade');
             }
         );

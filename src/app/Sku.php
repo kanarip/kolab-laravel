@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Kolab;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Sku extends Model
 {
-    protected $table = 'sku';
-
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -31,7 +29,7 @@ class Sku extends Model
 
         static::creating(
             function ($sku) {
-                $sku->{$sku->getKeyName()} = \App\Utils::uuidStr();
+                $sku->{$sku->getKeyName()} = \Kolab\Utils::uuidStr();
             }
         );
     }
@@ -43,6 +41,6 @@ class Sku extends Model
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement');
+        return $this->hasMany('Kolab\Entitlement');
     }
 }

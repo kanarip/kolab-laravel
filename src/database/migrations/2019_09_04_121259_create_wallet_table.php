@@ -14,23 +14,28 @@ class CreateWalletTable extends Migration
     public function up()
     {
         Schema::create(
-            'wallet',
+            'wallets',
             function (Blueprint $table) {
                 $table->string('id', 36);
                 $table->string('description', 128)->nullable();
                 $table->string('currency', 4);
                 $table->decimal('balance', 8, 2);
                 $table->bigInteger('user_id');
+            }
+        );
 
+        Schema::table(
+            'wallets',
+            function (Blueprint $table) {
                 $table->primary('id');
                 $table->index('user_id');
             }
         );
 
         Schema::table(
-            'wallet',
+            'wallets',
             function (Blueprint $table) {
-                $table->foreign('user_id')->references('id')->on('user');
+                $table->foreign('user_id')->references('id')->on('users');
             }
         );
     }
@@ -42,6 +47,6 @@ class CreateWalletTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wallet');
+        Schema::dropIfExists('wallets');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Kolab\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Kolab\Http\Controllers\Auth;
 
-use App\User;
-use App\Http\Controllers\Controller;
+use Kolab\User;
+use Kolab\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -64,7 +64,7 @@ class RegisterController extends Controller
 
         @param array $data
 
-        @return \App\User
+        @return \Kolab\User
      */
     protected function create(array $data)
     {

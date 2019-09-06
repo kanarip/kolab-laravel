@@ -169,11 +169,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Kolab\Providers\AppServiceProvider::class,
+        Kolab\Providers\AuthServiceProvider::class,
+        // Kolab\Providers\BroadcastServiceProvider::class,
+        Kolab\Providers\EventServiceProvider::class,
+        Kolab\Providers\RouteServiceProvider::class,
 
     ],
 

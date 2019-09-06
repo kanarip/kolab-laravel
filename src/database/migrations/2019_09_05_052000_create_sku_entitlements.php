@@ -14,7 +14,7 @@ class CreateSkuEntitlements extends Migration
     public function up()
     {
         Schema::create(
-            'entitlement',
+            'entitlements',
             function (Blueprint $table) {
                 $table->string('id', 36);
                 $table->bigInteger('owner_id');
@@ -27,7 +27,7 @@ class CreateSkuEntitlements extends Migration
         );
 
         Schema::create(
-            'sku',
+            'skus',
             function (Blueprint $table) {
                 $table->string('id', 36);
                 $table->string('title', 64);
@@ -38,7 +38,7 @@ class CreateSkuEntitlements extends Migration
         );
 
         Schema::table(
-            'entitlement',
+            'entitlements',
             function (Blueprint $table) {
                 $table->primary('id');
                 $table->unique(['owner_id', 'user_id']);
@@ -46,29 +46,29 @@ class CreateSkuEntitlements extends Migration
         );
 
         Schema::table(
-            'sku',
+            'skus',
             function (Blueprint $table) {
                 $table->primary('id');
             }
         );
 
         Schema::table(
-            'entitlement',
+            'entitlements',
             function (Blueprint $table) {
                 $table->foreign('sku_id')
-                    ->references('id')->on('sku')
+                    ->references('id')->on('skus')
                     ->onDelete('cascade');
 
                 $table->foreign('owner_id')
-                    ->references('id')->on('user')
+                    ->references('id')->on('users')
                     ->onDelete('cascade');
 
                 $table->foreign('user_id')
-                    ->references('id')->on('user')
+                    ->references('id')->on('users')
                     ->onDelete('cascade');
 
                 $table->foreign('wallet_id')
-                    ->references('id')->on('wallet')
+                    ->references('id')->on('wallets')
                     ->onDelete('cascade');
             }
         );
@@ -82,7 +82,7 @@ class CreateSkuEntitlements extends Migration
     public function down()
     {
         // TODO: drop foreign keys first
-        Schema::dropIfExists('entitlement');
-        Schema::dropIfExists('sku');
+        Schema::dropIfExists('entitlements');
+        Schema::dropIfExists('skus');
     }
 }

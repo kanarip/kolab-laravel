@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Kolab;
 
 use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -18,8 +18,6 @@ class User extends Authenticatable implements JWTSubject
     use NullableFields;
 
     // do not use the plural for table names
-    protected $table = 'user';
-
     public $incrementing = false;
     protected $keyType = 'bigint';
 
@@ -90,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
 
         static::creating(
             function ($user) {
-                $user->{$user->getKeyName()} = \App\Utils::uuidInt();
+                $user->{$user->getKeyName()} = \Kolab\Utils::uuidInt();
                 $user->password = bcrypt(Str::random(64));
             }
         );
@@ -110,7 +108,7 @@ class User extends Authenticatable implements JWTSubject
     public function accounts()
     {
         return $this->belongsToMany(
-            'App\Wallet',       // The foreign object definition
+            'Kolab\Wallet',       // The foreign object definition
             'user_accounts',    // The table name
             'user_id',        // The local foreign key
             'wallet_id'       // The remote foreign key
@@ -124,7 +122,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function entitlements()
     {
-        return $this->hasMany('App\Entitlement');
+        return $this->hasMany('Kolab\Entitlement');
     }
 
     /**
@@ -134,7 +132,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function wallets()
     {
-        return $this->hasMany('App\Wallet');
+        return $this->hasMany('Kolab\Wallet');
     }
 
     /**
