@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use Kolab\User;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder

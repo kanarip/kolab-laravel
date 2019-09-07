@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 mysql -e 'drop database homestead;'
 mysql -e 'create database homestead;'
 

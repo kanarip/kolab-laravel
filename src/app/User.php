@@ -125,6 +125,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('Kolab\Entitlement');
     }
 
+    public function addEntitlement($entitlement)
+    {
+        if (!$this->entitlements()->get()->contains($entitlement)) {
+            return $this->entitlements()->save($entitlement);
+        }
+    }
+
     /**
         Wallets this user owns.
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Sku;
+use Kolab\Sku;
 use Illuminate\Database\Seeder;
 
 class SkuSeeder extends Seeder

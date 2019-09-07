@@ -13,26 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')
-    ->get(
-        '/user',
-        function (Request $request) {
-            return $request->user();
-        }
-    );
+Route::post('login', 'API\UserController@login');
+Route::get('refresh', 'API\UserController@refresh');
+Route::post('register', 'API\UserController@register');
 
-Route::prefix('auth')
-    ->group(
-        function () {
-            Route::post('register', 'AuthController@register');
-            Route::post('login', 'AuthController@login');
-            Route::get('refresh', 'AuthController@refresh');
-            Route::group(
-                ['middleware' => 'auth:api'],
-                function () {
-                    Route::get('user', 'AuthController@user');
-                    Route::post('logout', 'AuthController@logout');
-                }
-            );
-        }
-    );
+Route::group(
+    [
+        'middleware' => 'auth:api',
+        'prefix'=>'v4'
+    ],
+    function () {
+        Route::post('logout', 'API\UserController@refresh');
+        Route::apiResource('entitlements', API\EntitlementsController::class);
+        Route::apiResource('users', API\UsersController::class);
+        Route::apiResource('wallets', API\WalletsController::class);
+    }
+);
