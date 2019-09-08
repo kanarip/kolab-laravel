@@ -23,9 +23,9 @@ Route::group(
                 'prefix' => 'users'
             ],
             function () {
-                Route::post('login', 'API\UserController@login');
-                Route::get('refresh', 'API\UserController@refresh');
-                Route::post('register', 'API\UserController@register');
+                Route::post('login', 'API\UsersController@login');
+                Route::get('refresh', 'API\UsersController@refresh');
+                Route::post('register', 'API\UsersController@register');
             }
         );
 
@@ -35,7 +35,7 @@ Route::group(
                 'prefix'=>'users'
             ],
             function () {
-                Route::post('logout', 'API\UserController@refresh');
+                Route::post('logout', 'API\UsersController@refresh');
                 Route::apiResource('entitlements', API\EntitlementsController::class);
                 Route::apiResource('users', API\UsersController::class);
                 Route::apiResource('wallets', API\WalletsController::class);
