@@ -8,14 +8,13 @@ const config = {
   auth: bearer,
   http: axios,
   router: router,
-  tokenDefaultName: 'laravel-vue-spa',
+  tokenDefaultName: 'kolab',
   tokenStore: ['localStorage'],
-  rolesVar: 'role',
-  registerData: {url: 'users/register', method: 'POST', redirect: '/login'},
-  loginData: {url: 'users/login', method: 'POST', redirect: '', fetchUser: true},
-  logoutData: {url: 'users/logout', method: 'POST', redirect: '/', makeRequest: true},
-  fetchData: {url: 'users/user', method: 'GET', enabled: true},
-  refreshData: {url: 'users/refresh', method: 'GET', enabled: true, interval: 30}
+  registerData: {url: 'v4/users/register', method: 'POST', redirect: '/login'},
+  loginData: {url: 'v4/users/login', method: 'POST', redirect: '', fetchUser: true},
+  logoutData: {url: 'v4/users/logout', method: 'POST', redirect: '/', makeRequest: true},
+  fetchData: {url: 'v4/users/user', method: 'GET', enabled: true},
+  refreshData: {url: 'v4/users/refresh', method: 'GET', enabled: true, interval: 30}
 }
 
 export default config
