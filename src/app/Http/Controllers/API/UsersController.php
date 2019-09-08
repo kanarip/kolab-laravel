@@ -2,8 +2,8 @@
 
 namespace Kolab\Http\Controllers\API;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Factory as Validator;
 use Illuminate\Support\Facades\Auth;
 use Kolab\Http\Controllers\Controller;
 use Kolab\User;
